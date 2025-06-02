@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login System</title>
+    <title>Sign in</title>
     <link rel="stylesheet" href="/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .toast {
             position: fixed;
@@ -25,20 +26,49 @@
 </head>
 <body>
     <div class="loginBlock">
+        <h1>Sign in</h1>
         <form id="loginForm" onsubmit="return handleSubmit(event)" autocomplete="off">
             <div class="input-group">
-                <label for="username">Username</label>
                 <input type="text" id="username" name="username" required>
+                <label>USERNAME</label>
             </div>
             
             <div class="input-group">
-                <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
+                <label>PASSWORD</label>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="staySignedIn">
+                <label for="staySignedIn">Stay signed in</label>
             </div>
             
-            <button type="submit" id="submitButton">
-                <span class="button-text">Login</span>
+            <button type="submit" id="submitButton" class="sign-in-btn">
+                <span class="button-text">→</span>
             </button>
+
+            <div class="social-login">
+                <button type="button" class="social-btn facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </button>
+                <button type="button" class="social-btn google">
+                    <i class="fab fa-google"></i>
+                </button>
+                <button type="button" class="social-btn apple">
+                    <i class="fab fa-apple"></i>
+                </button>
+                <button type="button" class="social-btn xbox">
+                    <i class="fab fa-xbox"></i>
+                </button>
+                <button type="button" class="social-btn playstation">
+                    <i class="fab fa-playstation"></i>
+                </button>
+            </div>
+
+            <div class="bottom-links">
+                <a href="#">CAN'T SIGN IN?</a>
+                <a href="#">CREATE ACCOUNT</a>
+            </div>
         </form>
     </div>
     <div id="toast" class="toast"></div>
@@ -147,6 +177,13 @@
             }, 300);
         }, 3000);
     }
+
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const password = document.getElementById('password');
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        this.className = `fas fa-${type === 'password' ? 'eye' : 'eye-slash'}`;
+    });
     </script>
 </body>
 </html>
